@@ -6,5 +6,10 @@ async function bootstrap() {
   app.enableCors();
   app.setGlobalPrefix('api/v1');
   await app.listen(8888);
+
+   if (module.hot) {
+    module.hot.accept();
+    module.hot.dispose(() => app.close());
+  }
 }
 bootstrap().then();
