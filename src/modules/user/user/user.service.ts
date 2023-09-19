@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable } from "@nestjs/common";
 
 export class DataModel {
   userId = 0;
@@ -10,6 +10,7 @@ export class DataModel {
   }
 }
 let list = [new DataModel(0, '测试数据')] as DataModel[];
+
 @Injectable()
 export class UserService {
   getUserById(userId: number) {
@@ -21,6 +22,7 @@ export class UserService {
   }
 
   addUser(data: DataModel) {
+
     if (data.userId) {
       list.push(data);
     }
