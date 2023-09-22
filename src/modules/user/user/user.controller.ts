@@ -1,4 +1,4 @@
-import { Body, Controller, createParamDecorator, Get, Post, Query } from "@nestjs/common";
+import { Body, Controller, createParamDecorator, Get, HttpException, HttpStatus, Post, Query } from "@nestjs/common";
 
 import { DataModel, UserService } from './user.service';
 
@@ -35,6 +35,9 @@ export class UserController {
 
   @Post('/del')
   delUser(@Body('userId') userId: number) {
+    if(typeof userId !== 'number' || !Number.isInteger(userId)) {
+      throw new HttpException('用户编号错误', HttpStatus.BAD_REQUEST)
+    }
     return this.userService.delUser(Number(userId));
   }
 
