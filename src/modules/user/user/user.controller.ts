@@ -1,6 +1,16 @@
-import { Body, Controller, createParamDecorator, Get, HttpException, HttpStatus, Post, Query } from "@nestjs/common";
+import {
+  Body,
+  Controller,
+  Get,
+  HttpException,
+  HttpStatus,
+  Post,
+  Query,
+  Req, Res
+} from "@nestjs/common";
 
 import { DataModel, UserService } from './user.service';
+import { Request, Response } from "express";
 
 @Controller('user')
 export class UserController {
@@ -10,7 +20,11 @@ export class UserController {
   }
 
   @Get('/test')
-  test() {
+  test(@Req() request:Request ,@Res({ passthrough: true }) response: Response) {
+    console.log(request.cookies,'ccc'); // or "request.cookies['cookieKey']"
+    response.cookie('key', 'value',{
+      maxAge:3000
+    })
     return '111';
   }
   @Post('/test2')
@@ -19,7 +33,11 @@ export class UserController {
   }
 
   @Get('/getList')
-  getUserList() {
+  getUserList(@Req() request:Request ,@Res({ passthrough: true }) response: Response) {
+    console.log(request.cookies,'ccc'); // or "request.cookies['cookieKey']"
+    response.cookie('getListCookie', 'nest_getListCookie_val',{
+      // maxAge:30000
+    })
     return this.userService.getUserList();
   }
 
