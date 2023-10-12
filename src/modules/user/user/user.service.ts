@@ -13,6 +13,10 @@ let list = [new DataModel(0, '测试数据')] as DataModel[];
 
 @Injectable()
 export class UserService {
+  setCookie() {
+    return { info: 'success' } ;
+  }
+
   getUserById(userId: number) {
     return list.find((dd) => dd.userId === userId) ?? new DataModel();
   }

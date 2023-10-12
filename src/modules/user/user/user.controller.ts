@@ -6,11 +6,19 @@ import {
   HttpStatus,
   Post,
   Query,
-  Req, Res
+  Res
 } from "@nestjs/common";
 
 import { DataModel, UserService } from './user.service';
-import { Request, Response } from "express";
+import {Response} from 'express'
+import { createParamDecorator, ExecutionContext } from '@nestjs/common';
+
+export const Cookies = createParamDecorator(
+  (cookieKey: string, ctx: ExecutionContext) => {
+    const request = ctx.switchToHttp().getRequest();
+    return cookieKey ? request.cookies?.[cookieKey] : request.cookies;
+  },
+);
 
 @Controller('user')
 export class UserController {
@@ -19,25 +27,23 @@ export class UserController {
     //等价于 this.userService = new UserService()
   }
 
-  @Get('/test')
-  test(@Req() request:Request ,@Res({ passthrough: true }) response: Response) {
-    console.log(request.cookies,'ccc'); // or "request.cookies['cookieKey']"
-    response.cookie('key', 'value',{
-      maxAge:3000
+  @Get('/setCookie')
+  setCookie(@Res({ passthrough: true }) response:Response,@Cookies('myNameCookie') myNameCookie:string) {
+    console.log(myNameCookie,'mmm')
+    response.cookie('myNameCookie', 'dyl',{
+      maxAge:1000 * 60,
     })
-    return '111';
+
+    return this.userService.setCookie()
   }
+
   @Post('/test2')
   test2() {
     return '222';
   }
 
   @Get('/getList')
-  getUserList(@Req() request:Request ,@Res({ passthrough: true }) response: Response) {
-    console.log(request.cookies,'ccc'); // or "request.cookies['cookieKey']"
-    response.cookie('getListCookie', 'nest_getListCookie_val',{
-      // maxAge:30000
-    })
+  getUserList() {
     return this.userService.getUserList();
   }
 
@@ -47,12 +53,13 @@ export class UserController {
   }
 
   @Post('/add')
-  addUser(@Body() body: DataModel) {
+  addUser(@Body() body: DataModel,@Cookies('name') name: string) {
+    console.log(name,'mmm')
     return this.userService.addUser(body);
   }
 
   @Post('/del')
-  delUser(@Body('userId') userId: number) {
+  delUser(@Body('userId') userId: number,) {
     if(typeof userId !== 'number' || !Number.isInteger(userId)) {
       throw new HttpException('用户编号错误', HttpStatus.BAD_REQUEST)
     }

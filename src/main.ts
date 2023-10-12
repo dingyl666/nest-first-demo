@@ -6,8 +6,9 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule,{cors:true});
   // app.enableCors();
   app.setGlobalPrefix('api/v1');
-  await app.listen(8888);
   app.use(cookieParser());
+  await app.listen(8888);
+
    if (module.hot) {
     module.hot.accept();
     module.hot.dispose(() => app.close());
