@@ -1,15 +1,7 @@
 import { Injectable } from "@nestjs/common";
+import { DataModel, list, User_Map_list } from "./user.utils";
 
-export class DataModel {
-  userId = 0;
-  name = '';
 
-  constructor(id = 0, name = '') {
-    this.userId = id;
-    this.name = name;
-  }
-}
-let list = [new DataModel(0, '测试数据')] as DataModel[];
 
 @Injectable()
 export class UserService {
@@ -46,5 +38,11 @@ export class UserService {
       find.name = name;
     }
     return { info: 'success' };
+  }
+
+  login(name:string,password:string) {
+    return {
+      userInfo:User_Map_list.find(dd => dd.name === name && dd.password === password)
+    }
   }
 }

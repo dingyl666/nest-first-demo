@@ -9,16 +9,10 @@ import {
   Res
 } from "@nestjs/common";
 
-import { DataModel, UserService } from './user.service';
+import { UserService } from './user.service';
 import {Response} from 'express'
-import { createParamDecorator, ExecutionContext } from '@nestjs/common';
-
-export const Cookies = createParamDecorator(
-  (cookieKey: string, ctx: ExecutionContext) => {
-    const request = ctx.switchToHttp().getRequest();
-    return cookieKey ? request.cookies?.[cookieKey] : request.cookies;
-  },
-);
+import { Cookies } from "../../../common/cookie/cookie.decorator";
+import { DataModel } from "./user.utils";
 
 @Controller('user')
 export class UserController {
@@ -28,8 +22,10 @@ export class UserController {
   }
 
   @Get('/setCookie')
-  setCookie(@Res({ passthrough: true }) response:Response,@Cookies('myNameCookie') myNameCookie:string) {
-    console.log(myNameCookie,'mmm')
+  setCookie(
+    @Res({ passthrough: true }) response:Response,
+    @Cookies('myNameCookie') myNameCookie:string
+  ) {
     response.cookie('myNameCookie', 'dyl',{
       maxAge:1000 * 60,
     })
@@ -54,7 +50,6 @@ export class UserController {
 
   @Post('/add')
   addUser(@Body() body: DataModel,@Cookies('name') name: string) {
-    console.log(name,'mmm')
     return this.userService.addUser(body);
   }
 
@@ -69,5 +64,10 @@ export class UserController {
   @Post('/up')
   upUser(@Body('userId') userId: number, @Body('name') name: string) {
     return this.userService.upUser(Number(userId), name);
+  }
+
+  @Post('/login')
+  login(@Body('name') name :string , @Body('password') password : string) {
+    return this.userService.login(name,password)
   }
 }
