@@ -6,7 +6,7 @@ import {
   HttpStatus,
   Post,
   Query,
-  Res
+  Res, SetMetadata
 } from "@nestjs/common";
 
 import { UserService } from './user.service';
@@ -15,6 +15,7 @@ import { Cookies } from "../../../common/cookie/cookie.decorator";
 import { DataModel } from "./user.utils";
 
 @Controller('user')
+
 export class UserController {
   constructor(private readonly userService: UserService) {
     //private readonly userService: UserService是个语法糖
@@ -66,6 +67,7 @@ export class UserController {
     return this.userService.upUser(Number(userId), name);
   }
 
+  @SetMetadata('roles', ['master'])
   @Post('/login')
   login(@Body('name') name :string , @Body('password') password : string) {
     return this.userService.login(name,password)
