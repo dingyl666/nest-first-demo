@@ -6,13 +6,15 @@ import {
   HttpStatus,
   Post,
   Query,
-  Res, SetMetadata
+  Res
 } from "@nestjs/common";
 
 import { UserService } from './user.service';
 import {Response} from 'express'
 import { Cookies } from "../../../common/cookie/cookie.decorator";
 import { DataModel } from "./user.utils";
+import { Roles } from "../../../common/roles/roles.decorator";
+import { RoleEnum } from "../../../common/roles/role.enum";
 
 @Controller('user')
 
@@ -62,12 +64,12 @@ export class UserController {
     return this.userService.delUser(Number(userId));
   }
 
+  @Roles(RoleEnum.Master)
   @Post('/up')
   upUser(@Body('userId') userId: number, @Body('name') name: string) {
     return this.userService.upUser(Number(userId), name);
   }
 
-  @SetMetadata('roles', ['master'])
   @Post('/login')
   login(@Body('name') name :string , @Body('password') password : string) {
     return this.userService.login(name,password)

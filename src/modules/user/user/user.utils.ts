@@ -18,6 +18,6 @@ export interface IUser {
 }
 
 export const User_Map_list:IUser[] = [
-  { id:1, name:'master', password:'master', roles:[RoleEnum.Master], },
-  { id:2, name:'admin', password:'admin', roles:[RoleEnum.Admin], },
+  { id:1, name:RoleEnum.Master, password:RoleEnum.Master, roles:[RoleEnum.Master], },
+  { id:2, name:RoleEnum.Admin, password:RoleEnum.Admin, roles:[RoleEnum.Admin], },
 ]
