@@ -8,7 +8,6 @@ export class DataModel {
     this.name = name;
   }
 }
-export let list = [new DataModel(0, '测试数据')] as DataModel[];
 
 export interface IUser {
   id:number,

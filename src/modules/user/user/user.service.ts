@@ -1,6 +1,7 @@
 import { Injectable } from "@nestjs/common";
-import { DataModel, list, User_Map_list } from "./user.utils";
+import { DataModel,User_Map_list } from "./user.utils";
 
+let list = [new DataModel(0, '测试数据')] as DataModel[];
 
 
 @Injectable()

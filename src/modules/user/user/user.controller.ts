@@ -15,6 +15,7 @@ import { Cookies } from "../../../common/cookie/cookie.decorator";
 import { DataModel } from "./user.utils";
 import { Roles } from "../../../common/roles/roles.decorator";
 import { RoleEnum } from "../../../common/roles/role.enum";
+import { ApiOkResponse, ApiOperation, ApiResponse } from "@nestjs/swagger";
 
 @Controller('user')
 
@@ -41,6 +42,10 @@ export class UserController {
     return '222';
   }
 
+
+  @ApiOperation({ summary: 'getHello' })
+  //Response
+  @ApiOkResponse({ description: 'Response', type: ApiResponse<number> })
   @Get('/getList')
   getUserList() {
     return this.userService.getUserList();

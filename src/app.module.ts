@@ -4,7 +4,8 @@ import { AppService } from './app.service';
 import { UserModule } from './modules/user/user/user.module';
 import { ScheduleModule } from "@nestjs/schedule";
 import { RolesGuard } from "./common/roles/roles.guard";
-import { APP_GUARD } from "@nestjs/core";
+import { APP_GUARD, APP_INTERCEPTOR } from "@nestjs/core";
+import { TransformInterceptor } from "./common/api/transform.interceptor";
 
 @Module({
   imports: [UserModule,ScheduleModule.forRoot()],
@@ -14,6 +15,10 @@ import { APP_GUARD } from "@nestjs/core";
     {
       provide: APP_GUARD,
       useClass: RolesGuard,
+    },
+    {
+      provide: APP_INTERCEPTOR,
+      useClass: TransformInterceptor,
     },
   ],
 })
