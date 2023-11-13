@@ -4,7 +4,6 @@ import * as cookieParser from 'cookie-parser';
 import { LoggerMiddleware } from "./common/logger/logger.middleware";
 import { DocumentBuilder, SwaggerModule } from "@nestjs/swagger";
 
-declare const module: any;
 async function bootstrap() {
   const app = await NestFactory.create(AppModule,{cors:true});
   app.setGlobalPrefix('api/v1');
@@ -12,7 +11,7 @@ async function bootstrap() {
   app.use(new LoggerMiddleware().use) ;
 
   const options = new DocumentBuilder()
-    .setTitle('Cats example')
+    .setTitle('dyl nest test')
     .setDescription('The cats API description')
     .setVersion('1.0')
     .addTag('cats')

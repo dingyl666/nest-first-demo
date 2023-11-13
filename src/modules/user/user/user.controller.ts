@@ -12,10 +12,11 @@ import {
 import { UserService } from './user.service';
 import {Response} from 'express'
 import { Cookies } from "../../../common/cookie/cookie.decorator";
-import { DataModel } from "./user.utils";
+import { CreateUserDto, DataModel, IResponseResultListDto } from "./user.utils";
 import { Roles } from "../../../common/roles/roles.decorator";
 import { RoleEnum } from "../../../common/roles/role.enum";
-import { ApiOkResponse, ApiOperation, ApiResponse } from "@nestjs/swagger";
+import { ApiBody, ApiOkResponse, ApiOperation, ApiResponse } from "@nestjs/swagger";
+import { ApiResponseModel } from "../../../common/api/api.response";
 
 @Controller('user')
 
@@ -43,9 +44,7 @@ export class UserController {
   }
 
 
-  @ApiOperation({ summary: 'getHello' })
-  //Response
-  @ApiOkResponse({ description: 'Response', type: ApiResponse<number> })
+
   @Get('/getList')
   getUserList() {
     return this.userService.getUserList();
@@ -69,14 +68,27 @@ export class UserController {
     return this.userService.delUser(Number(userId));
   }
 
+
   @Roles(RoleEnum.Master)
   @Post('/up')
   upUser(@Body('userId') userId: number, @Body('name') name: string) {
     return this.userService.upUser(Number(userId), name);
   }
 
+
   @Post('/login')
   login(@Body('name') name :string , @Body('password') password : string) {
     return this.userService.login(name,password)
   }
+
+
+
+  @ApiBody({ type: CreateUserDto })
+  @ApiOperation({ summary: 'getHello' })
+  @ApiOkResponse({ description: 'Response111',})
+  @Post('/swagger/test/post')
+  @ApiResponse({ type: IResponseResultListDto })
+  swaggerTest() {
+  }
 }
+

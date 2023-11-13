@@ -2,20 +2,20 @@
 
 import {ApiProperty} from "@nestjs/swagger";
 
-export class ApiResponse <T = any> {
+export class ApiResponseModel <T = any> {
   @ApiProperty()
   data: T ;
 
   @ApiProperty({example:200})
   code:number ;
 
-  @ApiProperty()
+  @ApiProperty({required:false})
   timestamp: number ;
 
-  @ApiProperty({example:'success'})
+  @ApiProperty({example:'success',required:false})
   message?:string ;
 
-  constructor(data:T,code:number,timestamp:number,message?:string) {
+  constructor(data:T,code:number,timestamp?:number,message?:string) {
     this.data = data ;
     this.code = code ;
     this.timestamp = timestamp ;
