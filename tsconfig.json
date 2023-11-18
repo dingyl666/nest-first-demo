@@ -6,7 +6,6 @@
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "allowSyntheticDefaultImports": true,
-    "validateCustomDecorators": true,
     "target": "ES2019",
     "sourceMap": true,
     "outDir": "./dist",

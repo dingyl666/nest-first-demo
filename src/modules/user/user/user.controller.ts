@@ -1,16 +1,24 @@
 import { Body, Controller, createParamDecorator, Get, HttpException, HttpStatus, Post, Query } from "@nestjs/common";
 
 import { DataModel, UserService } from './user.service';
+import { ConfigService } from "@nestjs/config";
+import { ConfigEnum } from "src/enum/config";
 
 @Controller('user')
 export class UserController {
-  constructor(private readonly userService: UserService) {
+  constructor(
+    private readonly userService: UserService,
+    private readonly configService: ConfigService
+    ) {
     //private readonly userService: UserService是个语法糖
     //等价于 this.userService = new UserService()
+     const db = this.configService.get(ConfigEnum.DB) ;
+    console.log(db,'ddd') ;
   }
 
   @Get('/test')
   test() {
+  
     return '111';
   }
   @Post('/test2')
