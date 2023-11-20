@@ -25,7 +25,28 @@ export class UserController {
   @Post('/add') 
   addUser() {
     const user = {username:'dyl',password:'123456'} as User ;
-
     return this.userService.create(user) ;
+  }
+
+  @Get('/profile')
+  findProfile() {
+    return this.userService.findProfile(1)
+  }
+
+  
+  @Get('/logs')
+  findUserLogs() {
+    return this.userService.findUserLogs(2) ;
+  }
+
+  @Get('/logsBuGroup')
+  async getLogsBuGroup() {
+    const res = await this.userService.findLogsBuGroup(2) ;
+    return res.map(pp => (
+      {
+        count:Number(pp.count),
+        result:pp.result
+      }
+    ))
   }
 }

@@ -32,7 +32,7 @@ export class Profile {
 
     @OneToOne(() => User)
     // @JoinColumn({name:'user_id'}) 自定义key
-    @JoinColumn()
+    @JoinColumn() //设置了JoinColumn之后，在从profile表查user的时候 ts代码对应的字段是user
     user:User ;
 
 }
