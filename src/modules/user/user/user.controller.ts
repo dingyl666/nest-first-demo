@@ -3,7 +3,7 @@ import {
   Controller,
   Get,
   HttpException,
-  HttpStatus,
+  HttpStatus, Logger, Param, ParseIntPipe,
   Post,
   Query,
   Res
@@ -15,8 +15,7 @@ import { Cookies } from "../../../common/cookie/cookie.decorator";
 import { CreateUserDto, DataModel, IResponseResultListDto } from "./user.utils";
 import { Roles } from "../../../common/roles/roles.decorator";
 import { RoleEnum } from "../../../common/roles/role.enum";
-import { ApiBody, ApiOkResponse, ApiOperation, ApiResponse } from "@nestjs/swagger";
-import { ApiResponseModel } from "../../../common/api/api.response";
+import { ApiBody,ApiResponse, ApiTags } from "@nestjs/swagger";
 
 @Controller('user')
 
@@ -24,6 +23,12 @@ export class UserController {
   constructor(private readonly userService: UserService) {
     //private readonly userService: UserService是个语法糖
     //等价于 this.userService = new UserService()
+  }
+
+
+  @Get('/')
+  test(@Query('id',ParseIntPipe) id: number) {
+    Logger.warn(id,'iii')
   }
 
   @Get('/setCookie')
@@ -50,8 +55,8 @@ export class UserController {
     return this.userService.getUserList();
   }
 
-  @Get()
-  getUserById(@Query('userId') userId: number) {
+  @Get('/:id')
+  getUserById(@Query('userId',ParseIntPipe) userId: number) {
     return this.userService.getUserById(Number(userId));
   }
 
@@ -83,9 +88,8 @@ export class UserController {
 
 
 
+  @ApiTags('title 测试')
   @ApiBody({ type: CreateUserDto })
-  @ApiOperation({ summary: 'getHello' })
-  @ApiOkResponse({ description: 'Response111',})
   @Post('/swagger/test/post')
   @ApiResponse({ type: IResponseResultListDto })
   swaggerTest() {

@@ -8,7 +8,10 @@ import { APP_GUARD, APP_INTERCEPTOR } from "@nestjs/core";
 import { TransformInterceptor } from "./common/api/transform.interceptor";
 
 @Module({
-  imports: [UserModule,ScheduleModule.forRoot()],
+  imports: [
+    UserModule,
+    ScheduleModule.forRoot(),
+  ],
   controllers: [AppController],
   providers: [
     AppService,

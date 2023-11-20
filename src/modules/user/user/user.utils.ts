@@ -27,7 +27,7 @@ export class CreateUserDto {
   @ApiProperty()
   readonly name: string;
 
-  @ApiProperty()
+  @ApiProperty({required:false})
   readonly age: number;
 }
 
@@ -37,7 +37,7 @@ export class IResponseCodeDto {
 }
 export class IResponseResultListDto extends IResponseCodeDto {
   @ApiProperty({ isArray: true, type: CreateUserDto })
-  items: any;
+  items;
   @ApiProperty()
   list:number[]
 }
