@@ -16,7 +16,7 @@ import { Roles } from './roles/roles.entity';
     ScheduleModule.forRoot(),
     ConfigModule.forRoot({
       isGlobal:true,
-      load:[Configuration],
+      // load:[Configuration],
     }),
      TypeOrmModule.forRoot({
       type: "mysql",
