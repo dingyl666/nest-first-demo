@@ -14,7 +14,8 @@
 
 import { Logs } from "src/logs/logs.extity";
 import { Roles } from "src/roles/roles.entity";
-import { Column, Entity, JoinTable, ManyToMany, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, JoinTable, ManyToMany, OneToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Profile } from "./profile.extity";
 @Entity()
 export class User {
   @PrimaryGeneratedColumn()
@@ -25,6 +26,8 @@ export class User {
 
   @Column()
   password: string;
+  @OneToOne(() => Profile,profile => profile.user)
+  profile:Profile
 
   @OneToMany(() => Logs,logs => logs.users)
   logs:Logs[]

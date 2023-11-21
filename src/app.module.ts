@@ -27,6 +27,7 @@ import { Roles } from './roles/roles.entity';
       database: "nest",
       entities: [User,Profile,Logs,Roles],
       synchronize: true,
+      logging:process.env.NODE_ENV === 'development',
     }),
   ],
   controllers: [AppController],
