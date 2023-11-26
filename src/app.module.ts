@@ -10,6 +10,8 @@ import { User } from './modules/user/user.entity';
 import { Profile } from './modules/user/profile.extity';
 import { Logs } from './logs/logs.extity';
 import { Roles } from './roles/roles.entity';
+import { LoggerModule } from 'nestjs-pino' ;
+import { join } from 'path';
 @Module({
   imports: [
     UserModule,
@@ -18,6 +20,26 @@ import { Roles } from './roles/roles.entity';
       isGlobal:true,
       // load:[Configuration],
     }),
+     LoggerModule.forRoot({
+      pinoHttp:{
+        transport:process.env.NODE_ENV === 'development'
+        ?{
+          target:'pino-pretty',
+          options:{
+            colorize:true
+          }
+        }
+        :{
+          target:'pino-roll',
+          options:{
+            file:join('logs','log.txt'),
+            frequency:'daily',
+            size:'10m',//'0.1k'
+            mkdir:true,
+          }
+        }
+      }
+     }),
      TypeOrmModule.forRoot({
       type: "mysql",
       host: "localhost",
