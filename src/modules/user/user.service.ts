@@ -5,6 +5,7 @@ import { Repository } from "typeorm";
 import { Profile } from './profile.extity';
 import { Logs } from "src/logs/logs.extity";
 import { IGetUserListQuery } from "./dto/get-user.dto";
+import { conditionUtils } from "src/utils/db.helper";
 
 @Injectable()
 export class UserService {
@@ -14,11 +15,31 @@ export class UserService {
   ) {}
   findAll(query: IGetUserListQuery) {
 
+
+
     const {limit,page,username,role,gender} = query ;
 
     const take = limit ?? 10 ;
 
     const skip = ((page  ?? 1) - 1) * limit;
+
+
+    const obj = {
+      'user.username':username,
+      'profile.gender' :gender,
+      'roles.id':role,
+    }
+    const queryBuilder = this.userRepository
+          .createQueryBuilder('user')
+          .leftJoinAndSelect('user.profile', 'profile')
+          .leftJoinAndSelect('user.roles', 'roles') ;
+
+      const newQueryBuilder = conditionUtils(queryBuilder,obj) ;
+      return newQueryBuilder.getMany() ;
+        // .where(username ? 'user.username =: username' : '1=1', { username })
+        // .andWhere(gender ? 'profile.gender =:gender' : '1=1', { gender })
+        // .andWhere(role ? 'roles.id :=role' : '1=1', { role });
+        // return queryBuilder.getMany();
     return this.userRepository.find({
       select: {
         //select 控制查询后的数据 需要展示的字段
