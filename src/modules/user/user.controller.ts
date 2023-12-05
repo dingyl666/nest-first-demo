@@ -9,6 +9,7 @@ import {
   Patch,
   Post,
   Query,
+  UseFilters,
 } from '@nestjs/common';
 
 import { UserService } from './user.service';
@@ -17,10 +18,12 @@ import { ConfigEnum } from 'src/enum/config';
 import { User } from './user.entity';
 import { Logger } from 'nestjs-pino';
 import { IGetUserListQuery } from './dto/get-user.dto';
+import { TypeormFilter } from 'src/filters/typeorm.filter';
 
 
 
 @Controller('user')
+@UseFilters(new TypeormFilter())
 export class UserController {
   constructor(
     private readonly userService: UserService,
