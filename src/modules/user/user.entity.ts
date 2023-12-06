@@ -21,7 +21,9 @@ export class User {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column()
+  @Column({
+    unique:true ,//username 唯一 不能添加重名的
+  })
   username: string;
 
   @Column()

@@ -1,54 +1,83 @@
-import { Body, Controller, Get, HttpException, HttpStatus, Post, Query } from "@nestjs/common";
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  HttpException,
+  HttpStatus,
+  Param,
+  Patch,
+  Post,
+  Query,
+  UseFilters,
+} from '@nestjs/common';
 
-import {UserService } from './user.service';
-import { ConfigService } from "@nestjs/config";
-import { ConfigEnum } from "src/enum/config";
-import { User } from "./user.entity";
-import { Logger } from "nestjs-pino";
+import { UserService } from './user.service';
+import { ConfigService } from '@nestjs/config';
+import { ConfigEnum } from 'src/enum/config';
+import { User } from './user.entity';
+import { Logger } from 'nestjs-pino';
+import { IGetUserListQuery } from './dto/get-user.dto';
+import { TypeormFilter } from 'src/filters/typeorm.filter';
+
+
 
 @Controller('user')
+@UseFilters(new TypeormFilter())
 export class UserController {
   constructor(
     private readonly userService: UserService,
     private readonly configService: ConfigService,
-    private readonly logger: Logger
-    ) {
+    private readonly logger: Logger,
+  ) {
     //private readonly userService: UserService是个语法糖
     //等价于 this.userService = new UserService()
-     const db = this.configService.get(ConfigEnum.DB) ;
-     console.log(db,'ddd') ;
+    const db = this.configService.get(ConfigEnum.DB);
+    console.log(db, 'ddd');
   }
 
   @Get('/list')
-  getUsers() {
-    return this.userService.findAll() ;
+  // @Get('/list/id') 路径参数 用params获取
+  getUsers(@Query() query: IGetUserListQuery) {
+    console.log("🚀 ~ file: user.controller.ts:39 ~ UserController ~ getUsers ~ query:", query)
+    
+    //前端传递的query 里的参数全都是string 有的需要转换类型
+    return this.userService.findAll(query);
   }
 
-  @Post('/add') 
-  addUser() {
-    const user = {username:'dyl',password:'123456'} as User ;
-    return this.userService.create(user) ;
+  @Post('/add')
+  addUser(@Body() dto: any) {
+    const user = { username: 'dyl', password: '123456' } as User;
+    return this.userService.create(user);
   }
 
   @Get('/profile')
-  findProfile() {
-    return this.userService.findProfile(1)
+  findProfile(@Query() query: any) {
+    console.log(
+      '🚀 ~ file: user.controller.ts:55 ~ UserController ~ findProfile ~ query:',
+      query,
+    );
+
+    return this.userService.findProfile(1);
   }
 
-  
+  @Patch('/:idxx')
+  updateUser(@Body() dto: any, @Param('idxx') id: number) {}
+
+  @Delete('/:idxx')
+  deleteUser(@Param('idxx') id: number) {}
+
   @Get('/logs')
   findUserLogs() {
-    return this.userService.findUserLogs(2) ;
+    return this.userService.findUserLogs(2);
   }
 
   @Get('/logsBuGroup')
   async getLogsBuGroup() {
-    const res = await this.userService.findLogsBuGroup(2) ;
-    return res.map(pp => (
-      {
-        count:Number(pp.count),
-        result:pp.result
-      }
-    ))
+    const res = await this.userService.findLogsBuGroup(2);
+    return res.map((pp) => ({
+      count: Number(pp.count),
+      result: pp.result,
+    }));
   }
 }
