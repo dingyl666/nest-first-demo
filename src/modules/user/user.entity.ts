@@ -14,7 +14,7 @@
 
 import { Logs } from "src/logs/logs.extity";
 import { Roles } from "src/roles/roles.entity";
-import { Column, Entity, JoinTable, ManyToMany, OneToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm";
+import { AfterInsert, AfterRecover, AfterRemove, Column, Entity, JoinTable, ManyToMany, OneToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 import { Profile } from "./profile.extity";
 @Entity()
 export class User {
@@ -37,4 +37,18 @@ export class User {
   @ManyToMany(() => Roles,roles => roles.user)
   @JoinTable({name:'users_roles'})
   roles:Roles[] ;
+
+  @AfterInsert()
+  afterInsert(){
+    console.log("🚀 ~ file: user.entity.ts:43 ~ User ~ afterInsert ~ afterInsert:", 'afterInsert')
+    
+  }
+
+  @AfterRemove()
+  afterRemove() {
+    console.log("🚀 ~ file: user.entity.ts:49 ~ User ~ afterRemove ~ afterRemove:",
+     this.id,this.username
+     )
+    
+  }
 }

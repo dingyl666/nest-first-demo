@@ -77,7 +77,7 @@ export class UserService {
 
   async create(user: User) {
     const u = this.userRepository.create(user);
-    return this.userRepository.save(u);
+    return this.userRepository.insert(u);
   }
 
   async update(id: number, user: Partial<User>) {
@@ -85,7 +85,8 @@ export class UserService {
   }
 
   async remove(id: number) {
-    await this.userRepository.delete(id);
+    const user = await this.findOne(id)
+    await this.userRepository.remove(user);
   }
 
   findProfile(id: number) {
@@ -103,7 +104,7 @@ export class UserService {
     const users = await this.findOne(id);
     return this.logsRepository.find({
       where: {
-        users,
+        users:users.logs,
       },
       // relations:{
       //   users:true
