@@ -12,6 +12,7 @@ import { Logs } from './logs/logs.extity';
 import { Roles } from './roles/roles.entity';
 import { LoggerModule } from 'nestjs-pino' ;
 import { join } from 'path';
+import { AuthModule } from './auth/auth.module';
 @Module({
   imports: [
     UserModule,
@@ -51,6 +52,7 @@ import { join } from 'path';
       synchronize: true,
       logging:process.env.NODE_ENV === 'development',
     }),
+     AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],

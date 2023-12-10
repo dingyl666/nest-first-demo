@@ -11,5 +11,6 @@ import { Logs } from 'src/logs/logs.extity';
   ],
   controllers: [UserController],
   providers: [UserService],
+  exports:[UserService],
 })
 export class UserModule {}
